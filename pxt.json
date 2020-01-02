@@ -7,11 +7,12 @@
     },
     "files": [
         "README.md",
-        "main.ts"
+        "main.ts",
+        "IMission.ts",
+        "MissionMenu.ts"
     ],
     "testFiles": [
         "test.ts"
     ],
-    "public": false,
-    "additionalFilePaths": []
+    "public": false
 }
