@@ -2,7 +2,7 @@ const missionMenu = new MissionMenu();
 
 //% weight=100 color=#007BA7 icon="\uf0c9"
 namespace Menu {
-    //% block
+    //% block="on $message|received"
     export function addMission(name: string, missionFunction: () => void): void {
         const mission: IMission = {
             displayName: name,
