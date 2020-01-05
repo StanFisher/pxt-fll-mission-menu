@@ -86,6 +86,6 @@ class MissionMenu {
     }
 
     private missionMenuIndexIsValid(missionMenuIndex: number): boolean {
-        return this.missions.length > 0 && missionMenuIndex > 0 && missionMenuIndex < this.missions.length;
+        return this.missions.length > 0 && missionMenuIndex >= 0 && missionMenuIndex < this.missions.length;
     }
 }
