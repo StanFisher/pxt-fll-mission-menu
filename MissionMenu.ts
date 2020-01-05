@@ -23,10 +23,10 @@ class MissionMenu {
     }
 
     public updateMissionFunction(missionId: number, missionFunction: () => void): void {
-        if (this.missions.length > 0) {
-            this.missions
-                .filter(mission => mission.id === missionId)
-                .forEach(mission => mission.run = missionFunction);
+        const missionIndex = this.findMissionIndex(missionId);
+        
+        if (missionIndex >= 0) {
+            this.missions[missionIndex].run = missionFunction;
         }
     }
 
@@ -36,6 +36,7 @@ class MissionMenu {
 
     public runSelectedMission(): void {
         if (this.missionMenuIndexIsValid(this.selectedMissionIndex)) {
+            brick.showMood(moods.winking);
             const selectedMission = this.missions[this.selectedMissionIndex];
             selectedMission.isRunning = true;
 
@@ -50,14 +51,14 @@ class MissionMenu {
     }
 
     public selectPreviousMission(): void {
-        if (this.missions.length > 0) {
+        if (this.missionMenuIndexIsValid(this.selectedMissionIndex)) {
             this.previouslySelectedMissionIndex = this.selectedMissionIndex;
             this.selectedMissionIndex = this.selectedMissionIndex === 0 ? this.missions.length - 1 : this.selectedMissionIndex - 1;
         }
     }
 
     public selectNextMission(): void {
-        if (this.missions.length > 0) {
+        if (this.missionMenuIndexIsValid(this.selectedMissionIndex)) {
             this.previouslySelectedMissionIndex = this.selectedMissionIndex;
             this.selectedMissionIndex = (this.selectedMissionIndex + 1) % this.missions.length;
         }
@@ -69,6 +70,16 @@ class MissionMenu {
         for (let missionMenuIndex = 0; missionMenuIndex < this.missions.length; missionMenuIndex++) {
             brick.showString(this.getMissionMenuItemPrefix(missionMenuIndex) + this.missions[missionMenuIndex].displayName, missionMenuIndex + 1);
         }
+    }
+
+    private findMissionIndex(missionId: number): number {
+        for (let missionIndex = 0; missionIndex < this.missions.length; missionIndex++) {
+            if (this.missions[missionIndex].id === missionId) {
+                return missionIndex;
+            }
+        }
+
+        return -1;
     }
 
     private getMissionMenuItemPrefix(missionMenuIndex: number): string {
