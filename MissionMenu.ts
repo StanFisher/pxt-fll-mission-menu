@@ -22,6 +22,14 @@ class MissionMenu {
         this.updateDisplay();
     }
 
+    public updateMissionFunction(missionId: number, missionFunction: () => void): void {
+        if (this.missions.length > 0) {
+            this.missions
+                .filter(mission => mission.id === missionId)
+                .forEach(mission => mission.run = missionFunction);
+        }
+    }
+
     public clearAllMissions(): void {
         this.missions.splice(0, this.missions.length);
     }
