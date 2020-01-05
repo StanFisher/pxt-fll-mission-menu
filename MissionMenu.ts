@@ -1,18 +1,14 @@
 class MissionMenu {
-    private readonly _missions: IMission[];
+    private readonly missions: IMission[];
 
     private previouslySelectedMissionIndex: number;
     private selectedMissionIndex: number;
 
     constructor() {
-        this._missions = [];
-        
+        this.missions = [];
+
         this.previouslySelectedMissionIndex = -1;
         this.selectedMissionIndex = -1;
-    }
-
-    public get missions(): IMission[] {
-        return this._missions;
     }
 
     public addMission(mission: IMission): void {
@@ -26,12 +22,8 @@ class MissionMenu {
         this.updateDisplay();
     }
 
-    public updateDisplay(): void {
-        brick.clearScreen();
-
-        for (let missionMenuIndex = 0; missionMenuIndex < this.missions.length; missionMenuIndex++) {
-            brick.showString(this.getMissionMenuItemPrefix(missionMenuIndex) + this.missions[missionMenuIndex].displayName, missionMenuIndex + 1);
-        }
+    public clearAllMissions(): void {
+        this.missions.splice(0, this.missions.length);
     }
 
     public runSelectedMission(): void {
@@ -46,6 +38,28 @@ class MissionMenu {
 
             selectedMission.isRunning = false;
             this.updateDisplay();
+        }
+    }
+
+    public selectPreviousMission(): void {
+        if (this.missions.length > 0) {
+            this.previouslySelectedMissionIndex = this.selectedMissionIndex;
+            this.selectedMissionIndex = this.selectedMissionIndex === 0 ? this.missions.length - 1 : this.selectedMissionIndex - 1;
+        }
+    }
+
+    public selectNextMission(): void {
+        if (this.missions.length > 0) {
+            this.previouslySelectedMissionIndex = this.selectedMissionIndex;
+            this.selectedMissionIndex = (this.selectedMissionIndex + 1) % this.missions.length;
+        }
+    }
+
+    private updateDisplay(): void {
+        brick.clearScreen();
+
+        for (let missionMenuIndex = 0; missionMenuIndex < this.missions.length; missionMenuIndex++) {
+            brick.showString(this.getMissionMenuItemPrefix(missionMenuIndex) + this.missions[missionMenuIndex].displayName, missionMenuIndex + 1);
         }
     }
 
