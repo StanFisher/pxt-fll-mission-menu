@@ -1,10 +1,12 @@
 class MissionMenu {
     private readonly missions: IMission[];
+    private readonly missionHandlers: IMissionHandler[];
 
     private selectedMissionIndex: number;
 
     constructor() {
         this.missions = [];
+        this.missionHandlers = [];
 
         this.selectedMissionIndex = -1;
     }
@@ -19,19 +21,32 @@ class MissionMenu {
         this.updateDisplay();
     }
 
+    public defineMissionHandler(missionId: number, missionHandler: () => void): void {
+        const missionHandlerItem: IMissionHandler = {
+            id: missionId,
+            handler: missionHandler
+        };
+        
+        this.missionHandlers.push(missionHandlerItem);
+    }
+
     public clearAllMissions(): void {
         this.missions.splice(0, this.missions.length);
+        this.missionHandlers.splice(0, this.missionHandlers.length);
         brick.clearScreen();
     }
 
     public runSelectedMission(): void {
         if (this.missionMenuIndexIsValid(this.selectedMissionIndex)) {
             const selectedMission = this.missions[this.selectedMissionIndex];
+            const selectedMissionHandler = this.findMissionHandler(selectedMission.id);
 
             selectedMission.isRunning = true;
             this.updateDisplay();
 
-            selectedMission.run();
+            if (selectedMissionHandler) {
+                selectedMissionHandler.handler();
+            }
 
             selectedMission.isRunning = false;
             this.updateDisplay();
@@ -55,6 +70,18 @@ class MissionMenu {
         }
 
         this.updateDisplay();
+    }
+
+    private findMissionHandler(missionId: number): IMissionHandler | undefined {
+        if (this.missionHandlers.length > 0) {
+            for (let missionHandlerIndex = 0; missionHandlerIndex < this.missionHandlers.length; missionHandlerIndex++) {
+                if (this.missionHandlers[missionHandlerIndex].id === missionId) {
+                    return this.missionHandlers[missionHandlerIndex];
+                }
+            }
+        }
+
+        return undefined;
     }
 
     private updateDisplay(): void {

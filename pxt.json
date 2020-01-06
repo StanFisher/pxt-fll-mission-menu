@@ -9,7 +9,8 @@
         "README.md",
         "main.ts",
         "IMission.ts",
-        "MissionMenu.ts"
+        "MissionMenu.ts",
+        "IMissionHandler.ts"
     ],
     "testFiles": [
         "test.ts"

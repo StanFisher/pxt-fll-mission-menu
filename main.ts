@@ -2,16 +2,20 @@ const missionMenu = new MissionMenu();
 
 //% weight=100 color=#007BA7 icon="\uf0c9"
 namespace Menu {
-    //% block="define mission with ID $id and name $displayName"
-    export function defineMission(id: number, displayName: string, missionFunction: () => void): void {
+    //% block
+    export function addMission(id: number, displayName: string): void {
         const mission: IMission = {
             id: id,
             displayName: displayName,
-            isRunning: false,
-            run: missionFunction
+            isRunning: false
         };
 
         missionMenu.addMission(mission);
+    }
+
+    //% block="when $missionId is selected to run"
+    export function defineMissionHandler(missionId: number, missionHandler: () => void): void {
+        missionMenu.defineMissionHandler(missionId, missionHandler);
     }
 
     //% block
