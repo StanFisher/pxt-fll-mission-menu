@@ -1,38 +1,33 @@
 const missionMenu = new MissionMenu();
 
-brick.buttonUp.onEvent(ButtonEvent.Released, () => {
-    missionMenu.selectPreviousMission();
-});
-
-brick.buttonDown.onEvent(ButtonEvent.Released, () => {
-    missionMenu.selectNextMission();
-});
-
-brick.buttonEnter.onEvent(ButtonEvent.Released, () => {
-    missionMenu.runSelectedMission();
-});
-
 //% weight=100 color=#007BA7 icon="\uf0c9"
 namespace Menu {
-    //% block
-    export function addMission(id: number, displayName: string): void {
+    //% block="define mission with ID $id and name $displayName"
+    export function defineMission(id: number, displayName: string, missionFunction: () => void): void {
         const mission: IMission = {
             id: id,
             displayName: displayName,
             isRunning: false,
-            run: () => { }
+            run: missionFunction
         };
 
         missionMenu.addMission(mission);
-    }
-
-    //% block="define mission $id"
-    export function defineMission(id: number, missionFunction: () => void): void {
-        missionMenu.updateMissionFunction(id, missionFunction);
     }
 
     //% block
     export function clearAllMissions(): void {
         missionMenu.clearAllMissions();
     }
+
+    brick.buttonUp.onEvent(ButtonEvent.Released, () => {
+        missionMenu.selectPreviousMission();
+    });
+
+    brick.buttonDown.onEvent(ButtonEvent.Released, () => {
+        missionMenu.selectNextMission();
+    });
+
+    brick.buttonEnter.onEvent(ButtonEvent.Released, () => {
+        missionMenu.runSelectedMission();
+    });
 }
