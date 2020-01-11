@@ -45,9 +45,9 @@ class MissionMenu {
             this.updateDisplay();
 
             if (selectedMissionHandler) {
-                selectedMissionHandler.handler();
                 motors.stopAll();
                 motors.resetAll();
+                selectedMissionHandler.handler();
             }
 
             selectedMission.isRunning = false;
